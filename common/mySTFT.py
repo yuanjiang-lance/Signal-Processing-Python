@@ -14,7 +14,9 @@ def mySTFT(Sig, Fs, Nfbin, WinLen):
     Nfbin: the number of frequency bins
     WinLen: the window length to locate signal in time domain
     ---------- Output ----------
-
+    Spec: the STFT spectrum, 2D Numpy array
+    f: frequency bins, 1D Numpy array
+    t: time bins, 1D Numpy array
     """
     if np.isreal(Sig).all() or np.isrealobj(Sig):
         Sig = hilbert(Sig)
@@ -57,31 +59,27 @@ def stftshow(t, f, Spec):
     f: frequency bins, 1D Numpy array
     Spec: time-frequency spectrum, 2D Numpy array
     """
-    plt.figure()
+    plt.figure(figsize=(4.14, 3.64))
+    parameters = {
+        'font.family': 'Times New Roman',
+        'axes.labelsize': 14,
+        'axes.titlesize': 14,
+        'xtick.labelsize': 14,
+        'ytick.labelsize': 14,
+    }
+    plt.rcParams.update(parameters)
     plt.imshow(np.abs(Spec),
-               extent=(t[0], t[-1], f[0], f[-1]),
+               extent=(t[0], t[-1]+0.01, 0, f[-1]),
                aspect='auto',
                origin='lower',
                cmap='jet')
-    # JET = plt.cm.jet
-    # mycolor = np.vstack(([1, 1, 1], JET[1:]))
-    # plt.colormaps = JET
-    # plt.box(True)
-    # plt.colorbar(False)
-    # plt.gcf().set_position([846.6, 340.2, 414.4, 364])
-    # plt.gca().spines['linewidth'] = 1.5
-    # plt.gca().tick_params(axis='both',
-    #                       which='major',
-    #                       labelsize=18,
-    #                       fontname='Times New Roman')
-    plt.xlabel('Time (s)', fontsize=18)
-    plt.ylabel('Frequency (Hz)', fontsize=18)
-    plt.ylim([0, f[-1]])
-    plt.gca().invert_yaxis()
-    plt.gca().set_facecolor('w')
+    plt.xlabel('Time (s)')
+    plt.ylabel('Frequency (Hz)')
+    plt.tight_layout()
     plt.show()
 
 
+# One simple demo
 if __name__ == '__main__':
     Fs = 500
     T = 10
