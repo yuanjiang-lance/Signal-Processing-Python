@@ -53,14 +53,24 @@ def fftshow(f, ffty_Sig):
     if np.iscomplex(ffty_Sig).any() or np.iscomplexobj(ffty_Sig):
         ffty_Sig = np.abs(ffty_Sig)
 
-    plt.figure()
+    plt.figure(figsize=(4.5, 2.5))
+    parameters = {
+        'font.family': 'Times New Roman',
+        'axes.labelsize': 14,
+        'axes.titlesize': 14,
+        'xtick.labelsize': 14,
+        'ytick.labelsize': 14,
+    }
+    plt.rcParams.update(parameters)
     plt.plot(f, ffty_Sig, color='blue', linewidth=1)
     plt.xlabel('Frequency (Hz)')
     plt.ylabel('Amplitude (g)')
-
+    plt.axis([0, math.ceil(f[-1]), 0, 1.1*max(ffty_Sig)])
+    plt.tight_layout()
     plt.show()
 
 
+# A simple demo
 if __name__ == '__main__':
     Fs = 500
     T = 10
