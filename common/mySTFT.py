@@ -78,7 +78,7 @@ def stftshow(t, f, Spec):
     }
     plt.rcParams.update(parameters)
     plt.imshow(np.abs(Spec),
-               extent=(t[0], t[-1]+0.01, 0, f[-1]),
+               extent=(t[0], t[-1]+0.01, 0, f[-1]+1),
                aspect='auto',
                origin='lower',
                cmap='jet')

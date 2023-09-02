@@ -72,6 +72,7 @@ def sigshow(Sig, Fs):
     }
     plt.rcParams.update(parameters)
     plt.plot(t, Sig, color='blue', linewidth=0.5)
+    plt.xlim(0, t[-1]+0.005)
     plt.xlabel('Time (s)')
     plt.ylabel('Amplitude (AU)')
     plt.tight_layout()

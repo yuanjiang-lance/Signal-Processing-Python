@@ -74,7 +74,7 @@ def fftshow(f, ffty_Sig):
     plt.plot(f, ffty_Sig, color='blue', linewidth=1)
     plt.xlabel('Frequency (Hz)')
     plt.ylabel('Amplitude (g)')
-    plt.axis([0, math.ceil(f[-1]), 0, 1.1*max(ffty_Sig)])
+    plt.axis([0, f[-1]+1, 0, 1.1*max(ffty_Sig)])
     plt.tight_layout()
 
 
@@ -89,3 +89,4 @@ if __name__ == '__main__':
 
     f, ffty_Sig, fft_Sig = myfft(Sig, Fs)
     fftshow(f, ffty_Sig)
+    plt.show()
