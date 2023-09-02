@@ -13,7 +13,7 @@ Related documents:
 import sys
 import numpy as np
 from scipy.integrate import cumtrapz
-from scipy.sparse import diags, eye, spdiags, linalg, hstack, vstack
+from scipy.sparse import diags, eye, linalg, hstack, vstack
 
 '''
 def ACMD(Sig, Fs, iniIF, tao, mu, tol, maxit=300):

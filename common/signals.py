@@ -32,24 +32,6 @@ def Segment(Sig, Fs, TStart, TEnd):
     return Sig[NStart: NEnd]
 
 
-def Differ(Sig, dt):
-    """
-    Computing the derivative of a signal
-    --------- Input -----------
-    Sig: time series (e.g. a signal), 1D Numpy array
-    dt: sampling time interval of t
-    --------- Output ----------
-    dSig: derivative of signal, 1D Numpy array
-    """
-
-    dSig = np.zeros_like(Sig)
-    dSig[1:-1] = (Sig[2:] - Sig[:-2]) / (2*dt)
-    dSig[0] = (Sig[1] - Sig[0]) / dt
-    dSig[-1] = (Sig[-1] - Sig[-2]) / dt
-
-    return dSig
-
-
 def sigshow(Sig, Fs):
     """
     Showing one-dimentional signal
