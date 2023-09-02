@@ -77,7 +77,7 @@ def ACMD_adapt(Sig, Fs, iniIF, tao0, mu, tol, maxit=300):
     D = diags([e, e2, e], [0, 1, 2], (N-2, N), format='csr')    # 2nd-order difference operator, matrix D in the original paper
     Ddoub = D.T.dot(D)
     spzeros = diags([np.zeros(N)], [0], (N-2, N), format='csr')
-    PHI = vstack([hstack([D, spzeros]), hstack(spzeros, D)])
+    PHI = vstack([hstack([D, spzeros]), hstack([spzeros, D])])
     PHIdoub = PHI.T.dot(PHI)    # matrix PHI'*PHI
 
     IFitset = np.zeros((maxit, N))  # estimated IF in each iteration
@@ -92,8 +92,8 @@ def ACMD_adapt(Sig, Fs, iniIF, tao0, mu, tol, maxit=300):
 
     while sDif > tol and it <= maxit:
 
-        cosm = np.cos(2 * np.pi * cumtrapz(IF, t))
-        sinm = np.sin(2 * np.pi * cumtrapz(IF, t))
+        cosm = np.cos(2 * np.pi * cumtrapz(IF, t, initial=0))
+        sinm = np.sin(2 * np.pi * cumtrapz(IF, t, initial=0))
         Cm = diags([cosm], [0], (N, N), format='csr')
         Sm = diags([sinm], [0], (N, N), format='csr')
         Km = hstack([Cm, Sm])
