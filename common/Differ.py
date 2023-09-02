@@ -11,8 +11,9 @@ def Differ(y, dx):
     dy: derivative of y, 1D Numpy array
     """
 
-    dy = (y[2:] - y[:-2]) / (2*dx)
-    dy = np.insert(dy, 0, (y[1]-y[0])/dx)
-    dy = np.insert(dy, len(dy), (y[-1]-y[-2])/dx)
+    dy = np.zeros_like(y)
+    dy[1:-1] = (y[2:] - y[:-2]) / (2*dx)
+    dy[0] = (y[1] - y[0]) / dx
+    dy[-1] = (y[-1] - y[-2]) / dx
 
     return dy
