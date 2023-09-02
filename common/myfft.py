@@ -1,3 +1,12 @@
+# -*- coding: utf-8 -*-
+"""
+@Time       : 2023-09-01
+@Author     : Yuan JIANG
+@Email      : yuanj5@illinois.edu; lance682@qq.com
+@Software   : PyCharm
+@Description: Fast Fourier Transform (FFT) and its plot
+"""
+
 import math
 import numpy as np
 from scipy.fft import fft

@@ -1,3 +1,12 @@
+# -*- coding: utf-8 -*-
+"""
+@Time       : 2023-09-01
+@Author     : Yuan JIANG
+@Email      : yuanj5@illinois.edu; lance682@qq.com
+@Software   : PyCharm
+@Description: Derivative of signal
+"""
+
 import numpy as np
 
 
