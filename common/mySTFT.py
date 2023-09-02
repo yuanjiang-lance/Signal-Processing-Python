@@ -85,7 +85,6 @@ def stftshow(t, f, Spec):
     plt.xlabel('Time (s)')
     plt.ylabel('Frequency (Hz)')
     plt.tight_layout()
-    plt.show()
 
 
 # One simple demo
