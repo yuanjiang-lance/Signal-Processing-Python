@@ -76,7 +76,6 @@ def fftshow(f, ffty_Sig):
     plt.ylabel('Amplitude (g)')
     plt.axis([0, math.ceil(f[-1]), 0, 1.1*max(ffty_Sig)])
     plt.tight_layout()
-    plt.show()
 
 
 # A simple demo
