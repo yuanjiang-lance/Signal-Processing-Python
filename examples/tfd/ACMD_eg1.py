@@ -43,7 +43,7 @@ iniIF1 = 350 * np.ones(len(Sig))
 iniIF2 = 250 * np.ones(len(Sig))
 iniIF = np.vstack((iniIF1, iniIF2))
 
-IFest, Sigest, IAest = ACMD(
+Sigest, IFest, IAest = ACMD(
     Sig, Fs, iniIF, tao, mu, tol)
 
 # ----------- Estimated IF -----------

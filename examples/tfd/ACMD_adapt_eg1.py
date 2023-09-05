@@ -43,7 +43,7 @@ findex1 = np.argmax(fftSpec)
 f1peak = f[findex1]
 iniIF1 = f1peak * np.ones(len(Sig))
 
-IFest1, Sigest1, IAest1, taorec1 = ACMD_adapt(
+Sigest1, IFest1, IAest1, taorec1 = ACMD_adapt(
     Sig, Fs, iniIF1, tao0, mu, tol)
 
 # ----------- Component 2 Extraction --------------
@@ -53,7 +53,7 @@ findex2 = np.argmax(fftSpecRes)
 f2peak = f[findex2]
 iniIF2 = f2peak * np.ones(len(Sig))
 
-IFest2, Sigest2, IAest2, taorec2 = ACMD_adapt(
+Sigest2, IFest2, IAest2, taorec2 = ACMD_adapt(
     SigRes, Fs, iniIF2, tao0, mu, tol)
 
 # ----------- Estimated IF -----------

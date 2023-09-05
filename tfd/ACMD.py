@@ -36,8 +36,8 @@ def ACMD(Sig, Fs, iniIF, tao, mu, tol, maxit=300):
     maxit: maximum iteration number to avoid a dead loop, default is 300
 
     ------------ Returns -------------
-    IFest: estimated IF, 1D Numpy array or 2D Numpy array with each IF listed in one row
     Sigest: estimated signal mode, 1D Numpy array or 2D Numpy array with each mode listed in one row
+    IFest: estimated IF, 1D Numpy array or 2D Numpy array with each IF listed in one row
     IAest: estimated instantaneous amplitude (IA), equivalent to the envelope, 1D Numpy array or 2D Numpy array with each IA listed in one row
     """
 
@@ -120,7 +120,7 @@ def ACMD(Sig, Fs, iniIF, tao, mu, tol, maxit=300):
     Sigest = Sigitset[:, :, it] # estimated signal components
     IAest = IAitset[:, :, it]   # estimated IA
 
-    return IFest, Sigest, IAest
+    return Sigest, IFest, IAest
 
 
 def ACMD_adapt(Sig, Fs, iniIF, tao0, mu, tol, maxit=300):
@@ -138,8 +138,8 @@ def ACMD_adapt(Sig, Fs, iniIF, tao0, mu, tol, maxit=300):
     maxit: maximum iteration number to avoid a dead loop, default is 300
 
     ------------ Returns -------------
-    IFest: estimated IF, 1D Numpy array
     Sigest: estimated signal mode, 1D Numpy array
+    IFest: estimated IF, 1D Numpy array
     IAest: estimated instantaneous amplitude (IA), equivalent to the envelope, 1D Numpy array
     taorec: recording of tao (bandwidth controlling parameter) in each iteration, 1D Numpy array
     """
@@ -212,4 +212,4 @@ def ACMD_adapt(Sig, Fs, iniIF, tao0, mu, tol, maxit=300):
     IAest = np.sqrt(alpham ** 2 + betam ** 2)   # estimated IA
     taorec = taorec[:it+1]
 
-    return IFest, Sigest, IAest, taorec
+    return Sigest, IFest, IAest, taorec
