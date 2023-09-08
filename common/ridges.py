@@ -6,6 +6,7 @@
 @Software   : PyCharm
 @Description: Time-frequency ridge related functions
 """
+import itertools
 
 import numpy as np
 from scipy.sparse import diags, eye, linalg
@@ -114,3 +115,68 @@ def IFsmooth(IF, mu):
         newIF[i, :] = linalg.spsolve(A, IF[i, :].T).T
 
     return newIF
+
+
+def RPRG(index, thre):
+    """
+    Ridge path regrouping (RPRG)
+
+    ------------- Parameters -------------
+    index: initial time/frequency indexes of ridge curves, 2D Numpy array, each curve indexes should be listed in one row
+    thre: threshold for finding the intersection intervals
+
+    -------------- Returns -------------
+    index: final curve indexes after regrouping
+    intersct: detected intersection intervals for ridge curves
+    """
+
+    # ------- Finding all intersection intervals -------
+    M, N = index.shape  # M curves with the length of N
+    pairs = list(itertools.combinations(range(M), 2))
+
+    intersct = []
+    for i in range(len(pairs)):
+        pair = pairs[i]
+        tempindex = np.where(np.abs(index[pair[0], :] - index[pair[1], :]) <= thre)[0]
+
+        if len(tempindex) > 0:
+            tempindex2 = np.where(np.diff(tempindex) >= N / 70)[0]
+
+            if len(tempindex2) > 0:
+                for j in range(len(tempindex2) + 1):
+                    if j == 0:
+                        intersct.append(([pair[0], pair[1]], [tempindex[0], tempindex[tempindex2[0]]]))
+                    else:
+                        if j == len(tempindex2):
+                            intersct.append(([pair[0], pair[1]], [tempindex[tempindex2[-1]+1], tempindex[-1]]))
+                        else:
+                            intersct.append(([pair[0], pair[1]], [tempindex[tempindex2[j-1]+1], tempindex[tempindex2[j]]]))
+            else:
+                intersct.append(([pair[0], pair[1]], [tempindex[0], tempindex[-1]]))
+
+    # -------- Merge close intersection intervals ---------
+    if not intersct:
+        return index, []
+
+    Ninter = len(intersct)
+    pairs = list(itertools.combinations(range(Ninter), 2))
+
+    for i in range(len(pairs)):
+        pair = pairs[i]
+
+        comp1 = intersct[pair[0]][0]
+        interv1 = intersct[pair[0]][1]
+        locy1 = np.mean(index[comp1, interv1[0]])
+        locx1 = interv1[0]
+
+        comp2 = intersct[pair[1]][0]
+        interv2 = intersct[pair[1]][1]
+        locy2 = np.mean(index[comp2, interv2[0]])
+        locx2 = interv2[0]
+
+        if ((locx1-locx2) ** 2 - (locy1-locy2)**2) <= 4 * thre ** 2:
+            ucomp = list(set(comp1).union(comp2))
+            uset = [min(interv1[0], interv2[0]), max(interv1[1], interv2[1])]
+
+            intersct[pair[0]] = (ucomp, uset)
+            intersct[pair[1]] = ()
