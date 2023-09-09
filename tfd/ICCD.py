@@ -14,6 +14,7 @@ import sys
 import numpy as np
 from scipy.integrate import cumtrapz
 import scipy.sparse as sp
+from common.ridges import IFfit_overFourier
 
 
 def ICCD(Sig, Fs, iniIF, orderIA, lbd, orderIF=None):
