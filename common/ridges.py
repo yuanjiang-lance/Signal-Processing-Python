@@ -6,8 +6,9 @@
 @Software   : PyCharm
 @Description: Time-frequency ridge related functions
 """
-import itertools
 
+import itertools
+import sys
 import numpy as np
 from scipy.sparse import diags, eye, linalg
 
@@ -115,6 +116,62 @@ def IFsmooth(IF, mu):
         newIF[i, :] = linalg.spsolve(A, IF[i, :].T).T
 
     return newIF
+
+
+def IFfit_overFourier(iniIF, Fs, orderIF, lbd=5e-5):
+    """
+    Fitting instantaneous frequencies (IFs) using over Fourier series
+
+    ----------------- Parameters ------------------
+    iniIF: initial instantaneous frequencies (IFs), 1D/2D Numpy array, each IF lies in one row
+    Fs: sampling frequency (Hz)
+    orderIF: the order of Fourier series, one number or a vector with the same length of iniIF
+    lbd: Tikhonov regularization parameter, default 5e-5
+
+    ----------------- Returns -------------------
+    IFfit: IF after fitting
+    phase: phase corresponding to fitted IF
+    """
+
+    if len(iniIF.shape) == 1:
+        M = 1
+        N = iniIF.shape[0]
+    else:
+        M, N = iniIF.shape
+    if len(orderIF) != M and len(orderIF) != 1:
+        print('The length of orderIF must be 1 or equal to the number of IFs.')
+        sys.exit(1)
+    if len(orderIF) == 1:
+        orderIF = orderIF * np.ones(M)
+
+    t = np.arange(N) / Fs
+    f0 = Fs / (2*N)     # base frequency
+    IFfit = np.zeros([M, N])
+    phase = np.zeros([M, N])
+
+    for i in range(M):
+        order = orderIF[i]
+        H = np.zeros([N, 2*order+1])
+        HI = np.zeros([N, 2*order+1])
+        H[:, 0] = np.ones(N)
+        HI[:, 0] = t
+
+        for j in range(1, order+1):
+            H[:, j] = np.cos(2 * np.pi * f0 * j * t)
+            HI[:, j] = 1 / (2 * np.pi * f0 * j) * np.sin(2 * np.pi * f0 * j * t)
+        for j in range(order+1, 2*order+1):
+            H[:, j] = np.sin(2 * np.pi * f0 * (j-order) * t)
+            HI[:, j] = -1 / (2 * np.pi * f0 * (j-order)) * np.cos(2 * np.pi * f0 * (j-order) * t)
+
+        I = eye(H.shape[1])
+        if M == 1:
+            y = linalg(H.T.dot(H) + lbd*I, H.T.dot(iniIF))
+        else:
+            y = linalg(H.T.dot(H) + lbd*I, H.T.dot(iniIF[i, :]))
+        IFfit[i, :] = H.dot(y)
+        phase[i, :] = 2 * np.pi * HI.dot(y)
+
+    return IFfit, phase
 
 
 def RPRG(index, thre):
