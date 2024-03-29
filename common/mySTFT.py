@@ -50,7 +50,7 @@ def mySTFT(Sig, Fs, Nfbin, WinLen):
         rSig = rSig * np.conj(WinFun[temp1])
         Spec[:rSig.shape[0], iLoop] = rSig
 
-    Spec = fftshift(fft(Spec, axis=0), axes=0)
+    Spec = fftshift(fft(Spec, axis=0), axes=0) / rSig.shape[0]
 
     f = np.linspace(-Fs/2, Fs/2, N)
     t = np.arange(SigLen) / Fs
